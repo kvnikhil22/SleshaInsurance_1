@@ -14,6 +14,8 @@ import com.slesha.userms.repo.UserRepository;
 
 @Service
 public class UserService {
+
+    public String a;
     @Autowired
     UserRepository repo;
 
@@ -21,6 +23,8 @@ public class UserService {
     KafkaTemplate<String,String> template;
 
     public String signup(User user){
+            a = "+1" + user.getPhoneNum();
+            user.setPhoneNum(a);
             repo.save(user);
             return "Signed up succesfully";
     }

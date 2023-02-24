@@ -27,6 +27,13 @@ public class User{
     private LocalDate dob;
     @Column(unique = true)
     private String phone;
+    public String getPhoneNum(){
+        return this.phone;
+    }
+
+    public void setPhoneNum(String a){
+        this.phone = a ;
+    }
     private String password;
 
     
