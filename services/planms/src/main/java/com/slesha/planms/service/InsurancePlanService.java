@@ -20,6 +20,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import java.time.Month;
+import java.time.LocalDate;
+
 
 @Service
 public class InsurancePlanService {
@@ -38,16 +41,30 @@ public class InsurancePlanService {
 
 
     public void addPlan(InsurancePlan plan){
+        
         repo.save(plan);
     }
 
-    @Cacheable(value = "plan",key = "'all'")
-    public List<InsurancePlan> getPlans(){
-        return repo.findAll();
+@Cacheable(value = "plan", key = "'all'")
+public List<InsurancePlan> getPlans() {
+    List<InsurancePlan> plans = repo.findAll();
+    if (Month.FEBRUARY.equals(LocalDate.now().getMonth())) {
+        plans.forEach(plan -> {
+            double discountedPremium = plan.getAveragePremium() * 0.9;
+            plan.setAveragePremium((int)discountedPremium);
+            double discountedCoverage = plan.getMaximumCoverage() * 0.9;
+            plan.setMaximumCoverage((int) discountedCoverage); 
+        });
     }
+    return plans;
+}
+
+
     public Optional<InsurancePlan> getPlan(Integer id){
         return repo.findById(id);
     }
+
+
 
     public Optional<User> getUser(String emailId){
         ResponseEntity<User> response=template.getForEntity("http://userms:8080/userms/"+emailId, User.class);
@@ -78,6 +95,9 @@ public class InsurancePlanService {
             
 
     }
+
+
+
 
 
     @PostConstruct

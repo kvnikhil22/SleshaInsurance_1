@@ -26,5 +26,19 @@ public class InsurancePlan implements Serializable{
     private String planArea;
     private Integer averagePremium;
     private Integer maximumCoverage;
+    public Integer getAveragePremium() {
+        return averagePremium;
+    }
+    
+    public void setAveragePremium(Integer averagePremium) {
+        this.averagePremium = averagePremium;
+    }
+    public Integer getMaximumCoverage() {
+        return maximumCoverage;
+    }
+    
+    public void setMaximumCoverage(Integer maximumCoverage) {
+        this.maximumCoverage = maximumCoverage;
+    }
     
 }
